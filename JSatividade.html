@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Atividade 2 </title>
+<style>
+  body {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    background: #f4f6f9;
+    color: #333;
+    margin: 0; padding: 0;
+  }
+  header {
+    background: #f1c40f; 
+    color: #333;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  }
+  main {
+    max-width: 700px;
+    margin: 30px auto;
+    padding: 20px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  }
+  h2 {
+    color: #f1c40f;
+    margin-top: 30px;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 5px;
+  }
+  button {
+    background: #f1c40f;
+    color: #333;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 16px;
+    margin: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background 0.3s;
+  }
+  button:hover {
+    background: #d4ac0d;
+  }
+  input, select {
+    padding: 8px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    margin: 8px 0;
+    width: 100%;
+    font-size: 14px;
+    box-sizing: border-box;
+  }
+  #contador {
+    font-weight: bold;
+    font-size: 18px;
+    margin-left: 10px;
+  }
+  #paragrafos p, #lista li {
+    background: #fff9db; 
+    padding: 8px;
+    border-radius: 6px;
+    margin: 5px 0;
+  }
+  #qtdCaracteres {
+    font-weight: bold;
+    color: #b8860b; 
+  }
+  footer {
+    text-align: center;
+    padding: 15px;
+    margin-top: 40px;
+    background: #f0f0f0;
+    font-size: 13px;
+    color: #666;
+  }
+</style>
+</head>
+<body>
+<header>
+  <h1>Atividade de JavaScript</h1>
+</header>
+
+<main>
+  <h2>Escreva seu texto: </h2>
+  <input type="text" id="campoTexto" placeholder="Digite algo e pressione Enter">
+  <div id="paragrafos"></div>
+
+  <h2>Ordem de itens: </h2>
+  <select id="tipoLista">
+    <option value="ul">Lista não ordenada</option>
+    <option value="ol">Lista ordenada</option>
+  </select>
+  <input type="text" id="novoItem" placeholder="Digite o item">
+  <button id="adicionarItem">Adicionar</button>
+  <div id="lista"></div>
+
+  <h2>Contador de Clicks:</h2>
+  <button id="incrementar">+</button>
+  <button id="decrementar">-</button>
+  <span id="contador">0</span>
+
+  <h2>Contador de Caracteres:</h2>
+  <input type="text" id="campoCaracteres" placeholder="Digite algo">
+  <p>Caracteres (sem espaços): <span id="qtdCaracteres">0</span></p>
+
+  <h2>Resetar testes: </h2>
+  <button id="resetar">Resetar </button>
+</main>
+
+<footer>
+  <p>Feito para a Atividade 2 – DOM</p>
+</footer>
+
+<script>
+  let contador = 0;
+  const spanContador = document.getElementById("contador");
+  const campoTexto = document.getElementById("campoTexto");
+  const divParagrafos = document.getElementById("paragrafos");
+  const campoCaracteres = document.getElementById("campoCaracteres");
+  const spanCaracteres = document.getElementById("qtdCaracteres");
+  const tipoLista = document.getElementById("tipoLista");
+  const inputNovoItem = document.getElementById("novoItem");
+  const divLista = document.getElementById("lista");
+  let lista = null;
+
+  // Contador de Cliques simplificado
+  document.getElementById("incrementar").onclick = () => {
+    spanContador.textContent = ++contador;
+  };
+
+  document.getElementById("decrementar").onclick = () => {
+    if (contador > 0) {
+      spanContador.textContent = --contador;
+    } else {
+      alert("O contador já está em zero!");
+    }
+  };
+
+  // Adicionar texto ao pressionar Enter
+  campoTexto.addEventListener("keypress", e => {
+    if (e.key === "Enter" && campoTexto.value.trim()) {
+      const p = document.createElement("p");
+      p.textContent = campoTexto.value.trim();
+      divParagrafos.appendChild(p);
+      campoTexto.value = "";
+    }
+  });
+
+  // Contar caracteres (sem espaços)
+  campoCaracteres.oninput = () => {
+    const texto = campoCaracteres.value.replace(/\s/g, "");
+    spanCaracteres.textContent = texto.length;
+  };
+
+  // Adicionar item na lista
+  document.getElementById("adicionarItem").onclick = () => {
+    if (!inputNovoItem.value.trim()) return;
+
+    if (!lista || lista.tagName.toLowerCase() !== tipoLista.value) {
+      divLista.innerHTML = "";
+      lista = document.createElement(tipoLista.value);
+      divLista.appendChild(lista);
+    }
+
+    const li = document.createElement("li");
+    li.textContent = inputNovoItem.value.trim();
+    lista.appendChild(li);
+    inputNovoItem.value = "";
+  };
+
+  // Resetar tudo
+  document.getElementById("resetar").onclick = () => {
+    contador = 0;
+    spanContador.textContent = contador;
+    divParagrafos.innerHTML = "";
+    campoTexto.value = "";
+    campoCaracteres.value = "";
+    spanCaracteres.textContent = "0";
+    divLista.innerHTML = "";
+    lista = null;
+  };
+</script>
+</body>
+</html>
